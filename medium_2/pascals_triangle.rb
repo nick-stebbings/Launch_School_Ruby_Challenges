@@ -27,11 +27,10 @@
 #
 # C:
 #
-require 'pry'
-require_relative 'memoizer_module'
+# require_relative 'memoizer_module'
 
 class Triangle
-  include RubyMemoized
+  # include RubyMemoized
 
   def initialize(total_rows)
     @total_rows = total_rows
@@ -57,57 +56,32 @@ class Triangle
     triangle
   end
 
-  memoized
+  # memoized
 
-  def memoized_rows_recursive(rows)
-    return [[1]] if rows == 1
-    return [[1], [1, 1]] if rows == 2
+  # def memoized_rows_recursive(rows)
+  #   return [[1]] if rows == 1
+  #   return [[1], [1, 1]] if rows == 2
 
-    results = memoized_rows_recursive(rows - 1)
-    middle_values = results
-                    .last
-                    .each_cons(2)
-                    .with_object([]) { |pair, arr| arr << pair.sum }
+  #   results = memoized_rows_recursive(rows - 1)
+  #   middle_values = results
+  #                   .last
+  #                   .each_cons(2)
+  #                   .with_object([]) { |pair, arr| arr << pair.sum }
 
-    results << ([1] + middle_values + [1])
-  end
+  #   results << ([1] + middle_values + [1])
+  # end
 
-  def rows_recursive(rows)
-    return [[1]] if rows == 1
-    return [[1], [1, 1]] if rows == 2
+  # def rows_recursive(rows)
+  #   return [[1]] if rows == 1
+  #   return [[1], [1, 1]] if rows == 2
 
-    results = rows_recursive(rows - 1)
-    middle_values = results
-                    .last
-                    .each_cons(2)
-                    .with_object([]) { |pair, arr| arr << pair.sum }
+  #   results = rows_recursive(rows - 1)
+  #   middle_values = results
+  #                   .last
+  #                   .each_cons(2)
+  #                   .with_object([]) { |pair, arr| arr << pair.sum }
 
-    results << ([1] + middle_values + [1])
-  end
-
-  def fib_recursive(n)
-    return 1 if n == 1
-    return 1 if n == 2
-
-    fib_recursive(n - 1) + fib_recursive(n - 2)
-  end
-
-  def memoized_fib_recursive(n)
-    return 1 if n == 1
-    return 1 if n == 2
-
-    fib_recursive(n - 1) + fib_recursive(n - 2)
-  end
-
-  # def memoise(&block)
-  #   cache = {}
-  #   if cache.keys.include?(@total_rows)
-  #     return cache[@total_rows]
-  #   else
-  #     cache[@total_rows] = block.call
-  #   end
-
-  #   block
+  #   results << ([1] + middle_values + [1])
   # end
 end
 
@@ -119,9 +93,11 @@ def execution_duration
   puts (Time.now - now).to_s
 end
 
-execution_duration { t.rows_recursive(1000) }
-execution_duration { t.memoized_rows_recursive(1000) }
-binding.pry
+# Trying to create a memoized version of the recursive method:::
+
+# execution_duration { t.rows_recursive(1000) }
+# execution_duration { t.memoized_rows_recursive(1000) }
+# binding.pry
 # p t.rows_recursive(100)
 
 # recurse_once = proc do |a, b|
@@ -135,16 +111,3 @@ binding.pry
 # # shorthands:
 # square.call(3) #=> 9
 # square[3] #=> 9
-
-# # Proc objects are closures, meaning they remember and can use the entire context in which they were created.
-
-# def gen_times(factor)
-#   proc { |n| n * factor } # remembers the value of factor at the moment of creation
-# end
-
-# times3 = gen_times(3)
-# times5 = gen_times(5)
-
-# times3.call(12)               #=> 36
-# times5.call(5)                #=> 25
-# times3.call(times5.call(4))   #=> 60
