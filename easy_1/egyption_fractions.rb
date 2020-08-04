@@ -32,18 +32,38 @@
     C:
     
 =end
-Rational(3,2)  # =>
-    def egyptian(rational)
-      denom_counter = 1
-      remainder = rational
+
+    def egyptian(leftover)
+      denom_counter = 0
       results = []
 
-      while remainder > 0
-         contender = Rational(1,denom_counter)
-         remainder, next_denom = remainder.divmod(contender)  
-         results.push(contender)
-         p remainder, next_denom  # =>
+      until leftover == 0
+        denom_counter += 1
+        contender = Rational(1,denom_counter)
+        
+        next if leftover < contender
+        leftover -= contender
+        results.push(denom_counter)
       end
+      results
     end
 
-egyptian(Rational(3,2))  # =>
+    def unegyptian
+
+    end
+    
+p egyptian(Rational(3,2))                                                           # => [1, 2]
+p egyptian(Rational(2, 1))    # -> [1, 2, 3, 6]                                     # =>
+p egyptian(Rational(137, 60)) # -> [1, 2, 3, 4, 5]                                  # =>
+p egyptian(Rational(3, 1))    # -> [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 15, 230, 57960]  # =>
+                                                                                    # => [1, 2, 3, 6]
+# unegyptian(egyptian(Rational(1, 2))) == Rational(1, 2)
+# unegyptian(egyptian(Rational(3, 4))) == Rational(3, 4)
+# unegyptian(egyptian(Rational(39, 20))) == Rational(39, 20)
+# unegyptian(egyptian(Rational(127, 130))) == Rational(127, 130)
+# unegyptian(egyptian(Rational(5, 7))) == Rational(5, 7)
+# unegyptian(egyptian(Rational(1, 1))) == Rational(1, 1)
+# unegyptian(egyptian(Rational(2, 1))) == Rational(2, 1)
+# unegyptian(egyptian(Rational(3, 1))) == Rational(3, 1)
+
+# >> [1, 2, 3, 6]

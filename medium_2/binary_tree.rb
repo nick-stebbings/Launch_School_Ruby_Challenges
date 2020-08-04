@@ -65,8 +65,6 @@
  #    - Has right value? 
 # C:
 #
-require 'pry'
-
 Node = Struct.new(:data, :left, :right) do
   def insert(new_data)    
     current_node = self
@@ -79,8 +77,9 @@ Node = Struct.new(:data, :left, :right) do
 end
 
 class Bst
-
-  def initialize(num); @root_node = Node.new(num, nil, nil); @enum = Object.new.to_enum; end
+  def initialize(num)
+    @root_node = Node.new(num, nil, nil)
+  end
 
   def data ; @root_node.data; end
 
@@ -90,67 +89,20 @@ class Bst
 
   def insert(new_data); @root_node.insert(new_data); end
 
-  def traverse_to_min
-    current_node = @root_node
-    while current_node.left
-      current_node current_node.left
-    end
-    current_node
-  end
-  
-  def is_left_edge?(node)
-    node.left.nil?
-  end
-
-  def is_right_edge?(node)
-    node.right.nil?
-  end
-  
-  def @enum.each
-    yield
-  end
-
-  def each(node = @root_node, enum = @enum, &block)
-    # Algo: In order traversal, check LEFT then DATA then RIGHT
-    # So to do this recursively, we need to recurse over left subtree
-    # THEN yield the current node's data
-    # THEN recurs over the right subtree
-    # Break condition: if left.nil? and right.nil? you are at an edge node, return
+  def traverse(node = @root_node, &block)
     return if node.nil?
-    begin
-      each(node.left, &block)
-      block.call(node.data) if block_given?
-      enum.feed(node.data) # ~> TypeError: feed value already set
-      each(node.right, &block)
-    rescue StopIteration
-      return enum
+    traverse(node.left, &block)
+    block.call(node.data) if block_given?
+    traverse(node.right, &block)
+  end
+
+  def each(&block)
+    if block_given?
+      traverse(&block)
+    else
+      all_data = []
+      traverse { |data| all_data << data }
+      return all_data.to_enum(:each)
     end
-    return enum
   end
 end
-
-    four = Bst.new 4  # => #<Bst:0x00007fffd5df1470 @root_node=#<struct Node data=4, left=nil, right=nil>, @enum=#<Enumerator: #<Object:0x00007fffd5df13f8>:each>>
-    four.insert 2     # => #<struct Node data=2, left=nil, right=nil>
-    four.insert 6     # => #<struct Node data=6, left=nil, right=nil>
-    four.insert 1     # => #<struct Node data=1, left=nil, right=nil>
-    four.insert 3     # => #<struct Node data=3, left=nil, right=nil>
-    four.insert 7     # => #<struct Node data=7, left=nil, right=nil>
-    four.insert 5     # => #<struct Node data=5, left=nil, right=nil>
-    four  # => #<Bst:0x00007fffd5df1470 @root_node=#<struct Node data=4, left=#<struct Node data=2, left=#<struct Node data=1, left=nil, right=nil>, right=#<struct Node data=3, left=nil, right=nil>>, right=#<struct Node data=6, left=#<struct Node data=5, left=nil, right=nil>, right=#<struct Node data=7, left=nil, right=nil>>>, @enum=#<Enumerator: #<Object:0x00007fffd5df13f8>:each>>
-  def record_all_data(bst)
-    all_data = []
-    bst.each { |data| all_data << data }
-    all_data
-  end
-      tree = Bst.new 4
-    [2, 1, 3, 6, 7, 5].each { |x| tree.insert x }  # => [2, 1, 3, 6, 7, 5]
-    each_enumerator = tree.each  # => 
-    each_enumerator.next  # => 
-
-# ~> TypeError
-# ~> feed value already set
-# ~>
-# ~> binary_tree.rb:123:in `feed'
-# ~> binary_tree.rb:123:in `each'
-# ~> binary_tree.rb:121:in `each'
-# ~> binary_tree.rb:147:in `<main>'
