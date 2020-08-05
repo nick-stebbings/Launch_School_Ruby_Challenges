@@ -7,64 +7,80 @@ class Element
   end
 
   def tail?
-    @next.nil?
+    !!@next.nil?
+  end
+
+  def nil?
+    datum.nil?
   end
 end
 
 class SimpleLinkedList
   attr_reader :head
 
-  def initialize(datum = nil)
+  def initialize(datum = nil, *data)
     @head = Element.new(datum)
+    data.each { |d| self.push(d) } if data
   end
-
+  
   def empty?
     head.datum.nil?
   end
 
+  def tail?
+    head.tail?
+  end
+ 
   def peek
     head.datum
   end
+  
+  alias_method :datum, :peek
 
   def push(obj)
-    @head = Element.new(obj, @head)
+    @head = head ? Element.new(obj, head) : Element.new(obj)
+  end
+
+  def pop
+    current = head.datum
+    @head = head.next
+    current
+  end
+
+  def to_a
+    return [] if empty?
+    arr = [head.datum]
+    current = head
+    while current.next
+      current = current.next
+      arr << current.datum
+    end
+    arr
   end
 
   def size
     return 0 if head.nil?
-
-    counter = @head.datum.nil? ? 0 : 1
-    current = nil
-    until @next.nil?
+    counter = 1
+    current = head
+    until current.next.nil?
+      current = current.next
       counter += 1
-      current = @head.next
     end
     counter
   end
 
-  def self.size_recursive(head)
-    length = head.nil? || head.datum.nil? ? 0 : 1
-    if length > 0
-      length + size_recursive(head.next)
-    else
-      length
+  def reverse
+    SimpleLinkedList.new(*to_a)
+  end
+  
+  class << self
+    def from_a(arr)
+      arr.nil? ? SimpleLinkedList.new(nil) : new(*arr.reverse)
+    end
+
+    def size_recursive(head)
+      length = head.nil? ? 0 : 1
+      length > 0 ? length + size_recursive(head.next) : length
     end
   end
 end
-
-l = SimpleLinkedList.new(Element.new(2))
-p l  # => #<SimpleLinkedList:0x00007fffd3b6a280 @head=#<Element:0x00007fffd3b6a258 @datum=#<Element:0x00007fffd3b6a2a8 @datum=2, @next=nil>, @next=nil>>
-l.head.datum  # => #<Element:0x00007fffd3b6a2a8 @datum=2, @next=nil>
-l.push(3)
-l.head # => #<Element:0x00007fffd3b6a258 @datum=#<Element:0x00007fffd3b6a2a8 @datum=2, @next=nil>, @next=nil>
-l.head.next.next # ~> NoMethodError: undefined method `next' for nil:NilClass
-SimpleLinkedList.size_recursive(l.head)
-SimpleLinkedList.size_recursive(SimpleLinkedList.new.head)
-
-# >> #<SimpleLinkedList:0x00007fffd3b6a280 @head=#<Element:0x00007fffd3b6a258 @datum=#<Element:0x00007fffd3b6a2a8 @datum=2, @next=nil>, @next=nil>>
-
-# ~> NoMethodError
-# ~> undefined method `next' for nil:NilClass
-# ~>
-# ~> simple_linked_list.rb:58:in `<main>'
-

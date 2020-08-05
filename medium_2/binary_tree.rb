@@ -68,11 +68,11 @@
 Node = Struct.new(:data, :left, :right) do
   def insert(new_data)    
     current_node = self
-      if new_data > current_node.data
-        current_node.right.nil? ? (return current_node.right = Node.new(new_data, nil, nil)) : current_node.right.insert(new_data)
-      else
-        current_node.left.nil? ? (return current_node.left = Node.new(new_data, nil, nil)) : current_node.left.insert(new_data)
-      end
+    if new_data > current_node.data
+      current_node.right.nil? ? (return current_node.right = Node.new(new_data, nil, nil)) : current_node.right.insert(new_data)
+    else
+      current_node.left.nil? ? (return current_node.left = Node.new(new_data, nil, nil)) : current_node.left.insert(new_data)
+    end
   end
 end
 
