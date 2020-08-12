@@ -103,33 +103,84 @@ C:
 class OCR
   def initialize(text)
     lines = text.split("\n")
-    raise ArgumentError unless lines.size <= 4
-    @lines = lines
-    @num_digits = @lines[1].size / 3
+    @line_arrays = (text.split("\n").size > 4 ? text.split("\n").each_slice(4) : [lines])
+    @result = ''
   end
 
   def convert
-    result = ''
-    @num_digits.times do |i|
-      # There are only 2 chars for some first lines. Recalibrate alg.
-      number_lines = @lines.map{ |line| line.slice((i * 3),3) }
-      puts number_lines
+    @line_arrays.to_a  # => [["    _  _", "  | _| _|", "  ||_  _|", ""], ["    _  _", "|_||_ |_", "  | _||_|", ""], [" _  _  _", "  ||_||_|", "  ||_| _|"]]
+    @line_arrays.each do |lines|
+      lines  # => ["    _  _", "  | _| _|", "  ||_  _|", ""]
+      num_digits = lines.max_by(&:size).size / 3  # => 3
+      num_digits.times do |i|
+        lines = lines.map{ |line| line.slice((i * 3),3) }  # => ["   ", "  |", "  |", ""], ["", "", "", nil]
+        lines.map!{ |l| l.size < 3 ? l + ' ' : l } # ~> NoMethodError: undefined method `size' for nil:NilClass
+        lines  # => ["   ", "  |", "  |", " "]
+        
+        @result << case 
+        when lines[0].match?(/^\s+$/)
+            if (lines[1] == '|_|')
+              '4'
+            elsif(lines[1] == '  |')
+              '1'
+            else
+              '?'
+            end
+          when lines[0].match?(' _')
+            case lines[2]
+            when ' _|'
+              case lines[1]
+              when ' _|' then '3'
+              when '|_|' then '9'
+              when '|_ ' then '5'
+              else '?'
+              end
+            when '|_|' then (lines[1] == '|_|' ? '8' : (lines[1] == '| |' ? '0' : '6'))
+            when '  |' then '7'
+            when '|_ ' then '2'
+            else '?'
+            end
+          else
+            '?'
+          end
+        end
     end
-    
-    '?'
+    @result
   end
 end
-# OCR.new("h\nell\no\n ").convert  # => "?"
+  #   text = <<-NUMBER.chomp
+  #      _     _        _  _
+  # |  || |  || |  |  || || |
+  # |  ||_|  ||_|  |  ||_||_|
 
-# >> h
-# >> ell
-# >> o
-# >>  
-# >> 
-# >> 
-# >> 
-# >> 
-# >> 
-# >> 
-# >> 
-# >> 
+  #   NUMBER
+      # => :convert
+    text = <<-NUMBER.chomp
+    _  _
+  | _| _|
+  ||_  _|
+
+    _  _
+|_||_ |_
+  | _||_|
+
+ _  _  _
+  ||_||_|
+  ||_| _|
+
+NUMBER
+OCR.new(text).convert  # => 
+
+# ~> NoMethodError
+# ~> undefined method `size' for nil:NilClass
+# ~>
+# ~> ocr.rb:117:in `block (3 levels) in convert'
+# ~> ocr.rb:117:in `map!'
+# ~> ocr.rb:117:in `block (2 levels) in convert'
+# ~> ocr.rb:115:in `times'
+# ~> ocr.rb:115:in `block in convert'
+# ~> ocr.rb:112:in `each'
+# ~> ocr.rb:112:in `each_slice'
+# ~> ocr.rb:112:in `each'
+# ~> ocr.rb:112:in `convert'
+# ~> ocr.rb:172:in `<main>'
