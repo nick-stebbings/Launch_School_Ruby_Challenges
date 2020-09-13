@@ -64,31 +64,74 @@
 #
 # For example, a message 4 characters long should use a 2 x 2 square. A message that is 81 characters long would use a square that is 9 columns wide. A message between 5 and 8 characters long should use a rectangle 3 characters wide.
 
+# class Crypto
+#   def initialize(input_str)
+#     @input_str = input_str
+#     @padded = plaintext_segments.map do |seg|
+#       seg.size == size ? seg : seg + ' ' * (size - seg.size)
+#     end
+#   end
+
+#   def normalize_plaintext
+#     @input_str.gsub(/[^a-z0-9]/i, '').downcase
+#   end
+
+#   def size
+#     Math.sqrt(normalize_plaintext.size).ceil
+#   end
+
+#   def plaintext_segments
+#     normalize_plaintext.split('').each_slice(size).map(&:join)
+#   end
+
+#   def ciphertext(joiner = '')
+#     @padded.map { |seg| seg.split('') }.transpose.map(&:join).map(&:strip).join(joiner)
+#   end
+
+#   def normalize_ciphertext
+#     ciphertext(' ')
+#   end
+# end
+
 class Crypto
+  attr_reader :size
+  
   def initialize(input_str)
     @input_str = input_str
-    @padded = plaintext_segments.map do |seg|
-      seg.size == size ? seg : seg + ' ' * (size - seg.size)
-    end
+    @size = Math.sqrt(normalize_plaintext.size).ceil
   end
 
   def normalize_plaintext
-    @input_str.gsub(/[^a-z0-9]/i, '').downcase
-  end
-
-  def size
-    Math.sqrt(normalize_plaintext.size).ceil
+    input_str.sub(/[^a-z0-9]/i, '').downcase
   end
 
   def plaintext_segments
-    normalize_plaintext.split('').each_slice(size).map(&:join)
+    normalize_plaintext
+      .split(' ')
+      .each_slice(size)
+      .map(&:join)
+  end
+  
+  def normalize_ciphertext(joiner = ' ')
+    pad_text
+    .map { |seg| seg.split('') }
+    .transpose
+    .map(&:join)
+    .map(&:strip)
+    .join(joiner)
   end
 
-  def ciphertext(joiner = '')
-    @padded.map { |seg| seg.split('') }.transpose.map(&:join).map(&:strip).join(joiner)
+  def ciphertext
+    normalize_ciphertext('')
   end
+  
+  private
 
-  def normalize_ciphertext
-    ciphertext(' ')
+  attr_reader :input_str
+
+  def pad_text
+    plaintext_segments.map do |seg|
+      seg.size == size ? seg : seg + ' ' * (size - seg.size)
+    end
   end
 end

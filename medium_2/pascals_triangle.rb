@@ -58,31 +58,31 @@ class Triangle
 
   # memoized
 
-  # def memoized_rows_recursive(rows)
-  #   return [[1]] if rows == 1
-  #   return [[1], [1, 1]] if rows == 2
+  def memoized_rows_recursive(rows)
+    return [[1]] if rows == 1
+    return [[1], [1, 1]] if rows == 2
 
-  #   results = memoized_rows_recursive(rows - 1)
-  #   middle_values = results
-  #                   .last
-  #                   .each_cons(2)
-  #                   .with_object([]) { |pair, arr| arr << pair.sum }
+    results = memoized_rows_recursive(rows - 1)
+    middle_values = results
+                    .last
+                    .each_cons(2)
+                    .with_object([]) { |pair, arr| arr << pair.sum }
 
-  #   results << ([1] + middle_values + [1])
-  # end
+    results << ([1] + middle_values + [1])
+  end
 
-  # def rows_recursive(rows)
-  #   return [[1]] if rows == 1
-  #   return [[1], [1, 1]] if rows == 2
+  def rows_recursive(rows)
+    return [[1]] if rows == 1
+    return [[1], [1, 1]] if rows == 2
 
-  #   results = rows_recursive(rows - 1)
-  #   middle_values = results
-  #                   .last
-  #                   .each_cons(2)
-  #                   .with_object([]) { |pair, arr| arr << pair.sum }
+    results = rows_recursive(rows - 1)
+    middle_values = results
+                    .last
+                    .each_cons(2)
+                    .with_object([]) { |pair, arr| arr << pair.sum }
 
-  #   results << ([1] + middle_values + [1])
-  # end
+    results << ([1] + middle_values + [1])
+  end
 end
 
 t = Triangle.new(10)

@@ -58,7 +58,7 @@ class Triplet
             fermat_candidate = Triplet.new(*fermat_candidate.map(&:to_i))
             y << fermat_candidate
 
-            plato_candidate = Triplet.new(*Plato.fractional_triplet(x))  # => #<Triplet:0x00007fffbafab600 @sides=[7, 24, 25]>
+            plato_candidate = Triplet.new(*Plato.fractional_triplet(x))  # => #<Triplet:0x00007fffe8213a28 @sides=[7, 24, 25]>
             y << plato_candidate unless plato_candidate.sides == fermat_candidate.sides
 
             (2..4).each do |i|
@@ -66,7 +66,7 @@ class Triplet
             end
           end
         end
-        pythag_candidate = Triplet.new(*Pythagorean.fractional_triplet(x))  # => #<Triplet:0x00007fffbadf2480 @sides=[8, 15, 17]>, #<Triplet:0x00007fffbafabc90 @sides=[12, 35, 37]>, #<Triplet:0x00007fffbafab150 @sides=[16, 63, 65]>, #<Triplet:0x00007fffbafaac28 @sides=[20, 99, 101]>, #<Triplet:0x00007fffbafaa700 @sides=[24, 143, 145]>, #<Triplet:0x00007fffbafaa1d8 @sides=[28, 195, 197]>, #<Triplet:0x00007fffbafa9cb0 @sides=[32, 255, 257]>, #<Triplet:0x00007fffbafa9788 @sides=[36, 323, 325]>, #<Triplet:0x00007fffbafa9260 @sides=[40, 399, 401]>, #<Triplet:0x00007fffbafa8d38 @sides=[44, 483, 485]>, #<Triplet:0x00007fffbafa8810 @sides=[48, 575, 577]>, #<Triplet:0x00007fffbafa82e8 @sides=[52, 675, 677]>, #<Triplet:0x00007fffbadde430 @sides=[56, 783, 785]>, #<Triplet:0x00007fffbadddc88 @sides=[60, 899, 901]>, #<Triplet:0x00007fffbaddd5d0 @sides=[64, 1023, 1025]>, #<Triplet:0x00007fffbaddcf18 @sides=[68, 1155, 1157]>, #<Triplet:0x00007fffbaddc338 @sides=[72, 1295, 1297]>, #<Triplet:0x00007...
+        pythag_candidate = Triplet.new(*Pythagorean.fractional_triplet(x))  # => #<Triplet:0x00007fffe805bc58 @sides=[8, 15, 17]>, #<Triplet:0x00007fffe8059340 @sides=[12, 35, 37]>, #<Triplet:0x00007fffe8213578 @sides=[16, 63, 65]>, #<Triplet:0x00007fffe8213050 @sides=[20, 99, 101]>, #<Triplet:0x00007fffe8212b28 @sides=[24, 143, 145]>, #<Triplet:0x00007fffe8212600 @sides=[28, 195, 197]>, #<Triplet:0x00007fffe82120d8 @sides=[32, 255, 257]>, #<Triplet:0x00007fffe8211bb0 @sides=[36, 323, 325]>, #<Triplet:0x00007fffe8211688 @sides=[40, 399, 401]>, #<Triplet:0x00007fffe8211160 @sides=[44, 483, 485]>, #<Triplet:0x00007fffe8210c38 @sides=[48, 575, 577]>, #<Triplet:0x00007fffe8210710 @sides=[52, 675, 677]>, #<Triplet:0x00007fffe82101e8 @sides=[56, 783, 785]>, #<Triplet:0x00007fffe8046498 @sides=[60, 899, 901]>, #<Triplet:0x00007fffe8045cc8 @sides=[64, 1023, 1025]>, #<Triplet:0x00007fffe8045610 @sides=[68, 1155, 1157]>, #<Triplet:0x00007fffe8044f08 @sides=[72, 1295, 1297]>, #<Triplet:0x00007...
         y << pythag_candidate
 
         x += 1
@@ -74,16 +74,16 @@ class Triplet
     end
     enum
       .take(max_factor)
-      .sort_by { |trip| trip.sides }  # => [#<Triplet:0x00007fffbafab768 @sides=[3, 4, 5]>, #<Triplet:0x00007fffbafab330 @sides=[6, 8, 10]>, #<Triplet:0x00007fffbafab600 @sides=[7, 24, 25]>, #<Triplet:0x00007fffbadf2480 @sides=[8, 15, 17]>, #<Triplet:0x00007fffbafab2b8 @sides=[9, 12, 15]>, #<Triplet:0x00007fffbafab240 @sides=[12, 16, 20]>, #<Triplet:0x00007fffbafabc90 @sides=[12, 35, 37]>, #<Triplet:0x00007fffbafab150 @sides=[16, 63, 65]>, #<Triplet:0x00007fffbafaac28 @sides=[20, 99, 101]>, #<Triplet:0x00007fffbafaa700 @sides=[24, 143, 145]>, #<Triplet:0x00007fffbafaa1d8 @sides=[28, 195, 197]>, #<Triplet:0x00007fffbafa9cb0 @sides=[32, 255, 257]>, #<Triplet:0x00007fffbafa9788 @sides=[36, 323, 325]>, #<Triplet:0x00007fffbafa9260 @sides=[40, 399, 401]>, #<Triplet:0x00007fffbafa8d38 @sides=[44, 483, 485]>, #<Triplet:0x00007fffbafa8810 @sides=[48, 575, 577]>, #<Triplet:0x00007fffbafa82e8 @sides=[52, 675, 677]>, #<Triplet:0x00007fffbadde430 @sides=[56, 783, 785]>, #<Triplet:0x00007fffbadd...
-      .drop_while { |trip| trip.sides[0] < min_factor}  # => [#<Triplet:0x00007fffbafab768 @sides=[3, 4, 5]>, #<Triplet:0x00007fffbafab330 @sides=[6, 8, 10]>, #<Triplet:0x00007fffbafab600 @sides=[7, 24, 25]>, #<Triplet:0x00007fffbadf2480 @sides=[8, 15, 17]>, #<Triplet:0x00007fffbafab2b8 @sides=[9, 12, 15]>, #<Triplet:0x00007fffbafab240 @sides=[12, 16, 20]>, #<Triplet:0x00007fffbafabc90 @sides=[12, 35, 37]>, #<Triplet:0x00007fffbafab150 @sides=[16, 63, 65]>, #<Triplet:0x00007fffbafaac28 @sides=[20, 99, 101]>, #<Triplet:0x00007fffbafaa700 @sides=[24, 143, 145]>, #<Triplet:0x00007fffbafaa1d8 @sides=[28, 195, 197]>, #<Triplet:0x00007fffbafa9cb0 @sides=[32, 255, 257]>, #<Triplet:0x00007fffbafa9788 @sides=[36, 323, 325]>, #<Triplet:0x00007fffbafa9260 @sides=[40, 399, 401]>, #<Triplet:0x00007fffbafa8d38 @sides=[44, 483, 485]>, #<Triplet:0x00007fffbafa8810 @sides=[48, 575, 577]>, #<Triplet:0x00007fffbafa82e8 @sides=[52, 675, 677]>, #<Triplet:0x00007fffbadde430 @sides=[56, 783, 785]>, #<Trip...
-      .select { |trip| trip.sides.last <= max_factor }  # => [#<Triplet:0x00007fffbafab768 @sides=[3, 4, 5]>, #<Triplet:0x00007fffbafab330 @sides=[6, 8, 10]>, #<Triplet:0x00007fffbafab600 @sides=[7, 24, 25]>, #<Triplet:0x00007fffbadf2480 @sides=[8, 15, 17]>, #<Triplet:0x00007fffbafab2b8 @sides=[9, 12, 15]>, #<Triplet:0x00007fffbafab240 @sides=[12, 16, 20]>, #<Triplet:0x00007fffbafabc90 @sides=[12, 35, 37]>, #<Triplet:0x00007fffbafab150 @sides=[16, 63, 65]>]
-      .select { |trip| !sum || (trip.sides.last ** 2 >= sum) }  # => [#<Triplet:0x00007fffbafab600 @sides=[7, 24, 25]>, #<Triplet:0x00007fffbadf2480 @sides=[8, 15, 17]>, #<Triplet:0x00007fffbafab2b8 @sides=[9, 12, 15]>, #<Triplet:0x00007fffbafab240 @sides=[12, 16, 20]>, #<Triplet:0x00007fffbafabc90 @sides=[12, 35, 37]>, #<Triplet:0x00007fffbafab150 @sides=[16, 63, 65]>]
-        # => [#<Triplet:0x00007fffbafab600 @sides=[7, 24, 25]>,
-        #     #<Triplet:0x00007fffbadf2480 @sides=[8, 15, 17]>,
-        #     #<Triplet:0x00007fffbafab2b8 @sides=[9, 12, 15]>,
-        #     #<Triplet:0x00007fffbafab240 @sides=[12, 16, 20]>,
-        #     #<Triplet:0x00007fffbafabc90 @sides=[12, 35, 37]>,
-        #     #<Triplet:0x00007fffbafab150 @sides=[16, 63, 65]>]
+      .sort_by { |trip| trip.sides }  # => [#<Triplet:0x00007fffe8213b90 @sides=[3, 4, 5]>, #<Triplet:0x00007fffe8213758 @sides=[6, 8, 10]>, #<Triplet:0x00007fffe8213a28 @sides=[7, 24, 25]>, #<Triplet:0x00007fffe805bc58 @sides=[8, 15, 17]>, #<Triplet:0x00007fffe82136e0 @sides=[9, 12, 15]>, #<Triplet:0x00007fffe8213668 @sides=[12, 16, 20]>, #<Triplet:0x00007fffe8059340 @sides=[12, 35, 37]>, #<Triplet:0x00007fffe8213578 @sides=[16, 63, 65]>, #<Triplet:0x00007fffe8213050 @sides=[20, 99, 101]>, #<Triplet:0x00007fffe8212b28 @sides=[24, 143, 145]>, #<Triplet:0x00007fffe8212600 @sides=[28, 195, 197]>, #<Triplet:0x00007fffe82120d8 @sides=[32, 255, 257]>, #<Triplet:0x00007fffe8211bb0 @sides=[36, 323, 325]>, #<Triplet:0x00007fffe8211688 @sides=[40, 399, 401]>, #<Triplet:0x00007fffe8211160 @sides=[44, 483, 485]>, #<Triplet:0x00007fffe8210c38 @sides=[48, 575, 577]>, #<Triplet:0x00007fffe8210710 @sides=[52, 675, 677]>, #<Triplet:0x00007fffe82101e8 @sides=[56, 783, 785]>, #<Triplet:0x00007fffe804...
+      .drop_while { |trip| trip.sides[0] < min_factor}  # => [#<Triplet:0x00007fffe8213b90 @sides=[3, 4, 5]>, #<Triplet:0x00007fffe8213758 @sides=[6, 8, 10]>, #<Triplet:0x00007fffe8213a28 @sides=[7, 24, 25]>, #<Triplet:0x00007fffe805bc58 @sides=[8, 15, 17]>, #<Triplet:0x00007fffe82136e0 @sides=[9, 12, 15]>, #<Triplet:0x00007fffe8213668 @sides=[12, 16, 20]>, #<Triplet:0x00007fffe8059340 @sides=[12, 35, 37]>, #<Triplet:0x00007fffe8213578 @sides=[16, 63, 65]>, #<Triplet:0x00007fffe8213050 @sides=[20, 99, 101]>, #<Triplet:0x00007fffe8212b28 @sides=[24, 143, 145]>, #<Triplet:0x00007fffe8212600 @sides=[28, 195, 197]>, #<Triplet:0x00007fffe82120d8 @sides=[32, 255, 257]>, #<Triplet:0x00007fffe8211bb0 @sides=[36, 323, 325]>, #<Triplet:0x00007fffe8211688 @sides=[40, 399, 401]>, #<Triplet:0x00007fffe8211160 @sides=[44, 483, 485]>, #<Triplet:0x00007fffe8210c38 @sides=[48, 575, 577]>, #<Triplet:0x00007fffe8210710 @sides=[52, 675, 677]>, #<Triplet:0x00007fffe82101e8 @sides=[56, 783, 785]>, #<Trip...
+      .select { |trip| trip.sides.last <= max_factor }  # => [#<Triplet:0x00007fffe8213b90 @sides=[3, 4, 5]>, #<Triplet:0x00007fffe8213758 @sides=[6, 8, 10]>, #<Triplet:0x00007fffe8213a28 @sides=[7, 24, 25]>, #<Triplet:0x00007fffe805bc58 @sides=[8, 15, 17]>, #<Triplet:0x00007fffe82136e0 @sides=[9, 12, 15]>, #<Triplet:0x00007fffe8213668 @sides=[12, 16, 20]>, #<Triplet:0x00007fffe8059340 @sides=[12, 35, 37]>, #<Triplet:0x00007fffe8213578 @sides=[16, 63, 65]>]
+      # .select { |trip| !sum || (trip.sides.sum == sum) }  # => [#<Triplet:0x00007fffe8213a28 @sides=[7, 24, 25]>, #<Triplet:0x00007fffe805bc58 @sides=[8, 15, 17]>, #<Triplet:0x00007fffe82136e0 @sides=[9, 12, 15]>, #<Triplet:0x00007fffe8213668 @sides=[12, 16, 20]>, #<Triplet:0x00007fffe8059340 @sides=[12, 35, 37]>, #<Triplet:0x00007fffe8213578 @sides=[16, 63, 65]>]
+        # => [#<Triplet:0x00007fffe8213a28 @sides=[7, 24, 25]>,
+        #     #<Triplet:0x00007fffe805bc58 @sides=[8, 15, 17]>,
+        #     #<Triplet:0x00007fffe82136e0 @sides=[9, 12, 15]>,
+        #     #<Triplet:0x00007fffe8213668 @sides=[12, 16, 20]>,
+        #     #<Triplet:0x00007fffe8059340 @sides=[12, 35, 37]>,
+        #     #<Triplet:0x00007fffe8213578 @sides=[16, 63, 65]>]
   end
 end
 
@@ -107,10 +107,10 @@ class Pythagorean < Triplet
   end
 end
 
- triplets = Triplet.where(sum: 180, max_factor: 100)  # => [#<Triplet:0x00007fffbafab600 @sides=[7, 24, 25]>, #<Triplet:0x00007fffbadf2480 @sides=[8, 15, 17]>, #<Triplet:0x00007fffbafab2b8 @sides=[9, 12, 15]>, #<Triplet:0x00007fffbafab240 @sides=[12, 16, 20]>, #<Triplet:0x00007fffbafabc90 @sides=[12, 35, 37]>, #<Triplet:0x00007fffbafab150 @sides=[16, 63, 65]>]
-  # => [#<Triplet:0x00007fffbafab600 @sides=[7, 24, 25]>,
-  #     #<Triplet:0x00007fffbadf2480 @sides=[8, 15, 17]>,
-  #     #<Triplet:0x00007fffbafab2b8 @sides=[9, 12, 15]>,
-  #     #<Triplet:0x00007fffbafab240 @sides=[12, 16, 20]>,
-  #     #<Triplet:0x00007fffbafabc90 @sides=[12, 35, 37]>,
-  #     #<Triplet:0x00007fffbafab150 @sides=[16, 63, 65]>]
+ triplets = Triplet.where(sum: 180, max_factor: 200)  # => [#<Triplet:0x00007fffe8213a28 @sides=[7, 24, 25]>, #<Triplet:0x00007fffe805bc58 @sides=[8, 15, 17]>, #<Triplet:0x00007fffe82136e0 @sides=[9, 12, 15]>, #<Triplet:0x00007fffe8213668 @sides=[12, 16, 20]>, #<Triplet:0x00007fffe8059340 @sides=[12, 35, 37]>, #<Triplet:0x00007fffe8213578 @sides=[16, 63, 65]>]
+  # => [#<Triplet:0x00007fffe8213a28 @sides=[7, 24, 25]>,
+  #     #<Triplet:0x00007fffe805bc58 @sides=[8, 15, 17]>,
+  #     #<Triplet:0x00007fffe82136e0 @sides=[9, 12, 15]>,
+  #     #<Triplet:0x00007fffe8213668 @sides=[12, 16, 20]>,
+  #     #<Triplet:0x00007fffe8059340 @sides=[12, 35, 37]>,
+  #     #<Triplet:0x00007fffe8213578 @sides=[16, 63, 65]>]
